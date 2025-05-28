@@ -1,0 +1,10 @@
+server:
+  port: 8484
+spring:
+  application:
+    name: financial-control
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/financial?currentSchema=fin
+    username: postgres
+    password: 1234
