@@ -10,6 +10,28 @@ jobs:
   build:
     name: building spring application
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: financial
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+          POSTGRES_SCHEMA: fin
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/financial?currentSchema=fin
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+    
     steps: 
       - name: checkout repo
         uses: actions/checkout@v4 #
@@ -22,3 +44,6 @@ jobs:
           
       - name: build with maven
         run: mvn clean install
+
+      - name: liquibase migration dry-run
+        run: mvn -Plocal liquibase:update  
