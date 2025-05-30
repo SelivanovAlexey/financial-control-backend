@@ -49,7 +49,7 @@ jobs:
           JAVA_HOME: ${{ env.JAVA_HOME }}
         with:
           changelogFile: migration/src/main/resources/db/master.xml
-          url: "jdbc:postgresql://localhost:5432/financial"
+          url: "jdbc:postgresql://postgres:5432/financial"
           password: "1234"
           showSummary: "verbose"
           showSummaryOutput: "all"
