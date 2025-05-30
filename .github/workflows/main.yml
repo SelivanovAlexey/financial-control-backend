@@ -40,7 +40,7 @@ jobs:
         run: mvn clean install
 
       - name: liquibase migration update dry-run
-      - uses: liquibase-github-actions/update@v4.32.0
+        uses: liquibase-github-actions/update@v4.32.0
         with:
           changelogFile: migration/src/main/resources/db/master.xml
           url: "jdbc:postgresql://localhost:5432/financial"
