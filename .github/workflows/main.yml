@@ -29,12 +29,13 @@ jobs:
     steps: 
       - name: checkout repo
         uses: actions/checkout@v4 #
-        
-      - name: setup java and maven
-        uses: actions/setup-java@v3 
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+
+      # NOTE !!! - liquibase update action has java_home itself so it is unnessesarry to setup java explicitly
+      #- name: setup java and maven
+      #  uses: actions/setup-java@v3 
+      # with:
+      #    java-version: '17'
+      #    distribution: 'temurin'
           
       - name: build with maven
         run: mvn clean install
