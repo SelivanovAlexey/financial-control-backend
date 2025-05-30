@@ -1,0 +1,24 @@
+name: CI pipeline
+
+on:
+  push:
+    branches:
+    - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: building spring application
+    runs-on: ubuntu-latest
+    steps: 
+      - name: checkout repo
+        uses: actions/checkout@v4 #
+        
+      - name: setup java and maven
+        uses: actions/setup-java@v3 
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          
+      - name: build with maven
+        run: mvn clean install
