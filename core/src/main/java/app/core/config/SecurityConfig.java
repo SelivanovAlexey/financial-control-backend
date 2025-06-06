@@ -15,10 +15,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 
 @Configuration
@@ -28,6 +30,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 public class SecurityConfig {
 
     private final UserServiceImpl userService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Bean
     @ConditionalOnProperty(name = "authentication.enabled", havingValue = "true")
@@ -47,6 +50,9 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .logoutSuccessHandler(logoutSuccessHandler())
                         .deleteCookies("JSESSIONID"))
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                )
                 .build();
     }
 
@@ -88,5 +94,10 @@ public class SecurityConfig {
             response.setStatus(200);
             response.setContentType("application/json");
         };
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, exception) -> handlerExceptionResolver.resolveException(request, response, null, exception);
     }
 }

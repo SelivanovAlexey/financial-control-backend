@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    //TODO: добавить логирование
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
     public boolean authenticate(AuthRequest authRequest, HttpServletRequest request, HttpServletResponse response) {
         boolean authenticated = false;
-        UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.getUsername(),authRequest.getPassword());
+        UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.unauthenticated(authRequest.username(), authRequest.password());
+        log.debug("Authentication attempt for user w/ username={}", authRequest.username());
         Authentication authentication = authenticationManager.authenticate(authToken);
         if (authentication.isAuthenticated()) {
             SecurityContext context = securityContextHolderStrategy.createEmptyContext();
@@ -34,8 +34,9 @@ public class AuthServiceImpl implements AuthService {
             securityContextHolderStrategy.setContext(context);
             securityContextRepository.saveContext(context, request, response);
             authenticated = true;
+            log.debug("User w/ username={} successfully authenticated", authRequest.username());
         }
-       return authenticated;
+        return authenticated;
     }
 
 }

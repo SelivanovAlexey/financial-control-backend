@@ -1,6 +1,6 @@
 package app.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class JsonHelper {
 
     private final ObjectMapper mapper;
 
-    public <K, V> String createJson(Map<K, V> inputMap) throws JsonProcessingException {
-        return mapper.writeValueAsString(inputMap);
+    public <K, V> JsonNode createJson(Map<K, V> inputMap) {
+        return mapper.valueToTree(inputMap);
     }
 }
