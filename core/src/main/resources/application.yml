@@ -1,10 +1,15 @@
+authentication:
+  enabled: false
+
 server:
   port: 8484
+  servlet:
+    context-path: /api
 spring:
   application:
     name: financial-control
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/financial?currentSchema=fin
+    url: jdbc:postgresql://localhost:5432/financial
     username: postgres
     password: 1234
