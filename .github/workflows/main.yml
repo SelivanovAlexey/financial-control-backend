@@ -44,21 +44,9 @@ jobs:
       - name: start up database
         run: | 
           cd migration
-          docker compose -f doker-compose.yaml up
+          docker compose -f doker-compose.yaml up -d
 
       - name: run liquibase migrations
         run: |
           cd migration
           mvn -Plocal liquibase:update
-
-      # - name: liquibase migration update dry-run
-      #   uses: liquibase-github-actions/update@v4.32.0
-      #   env:
-      #     JAVA_HOME: ${{ env.JAVA_HOME }}
-      #   with:
-      #     changelogFile: migration/src/main/resources/db/master.xml
-      #     url: "jdbc:postgresql://postgres:5432/financial"
-      #     password: "1234"
-      #     showSummary: "verbose"
-      #     showSummaryOutput: "all"
-      #     username: "postgres"
