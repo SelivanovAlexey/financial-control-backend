@@ -1,0 +1,18 @@
+authentication:
+  enabled: true
+
+server:
+  port: 8484
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: financial-control
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ep-odd-dream-a2e86dls.eu-central-1.pg.koyeb.app/financial
+    username: pg-admin
+    password: npg_yjdrJ4tFMf6x
+logging:
+  level:
+    app.core: debug
