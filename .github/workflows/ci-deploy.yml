@@ -49,7 +49,7 @@ jobs:
           service-ports: "8484:http"
           service-routes: "/:8484"
           git-builder: docker
-          service-instance-type: eco
+          service-instance-type: free
       
       - name: run liquibase migrations
         run: |
