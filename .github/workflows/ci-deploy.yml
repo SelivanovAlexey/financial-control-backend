@@ -35,8 +35,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps: 
-      - name: trigger koyeb deploy
-        run: curl -X POST https://app.koyeb.com/deploy?name=financial-control-backend-ci&instance_type=free&regions=was&instances_min=0&autoscaling_sleep_idle_delay=300&env%5BBUILD_PROFILE%5D=ci&env%5BSPRING_PROFILE%5D=ci&ports=8484%3Bhttp%3B%2F&hc_protocol%5B8484%5D=tcp&hc_grace_period%5B8484%5D=5&hc_interval%5B8484%5D=30&hc_restart_limit%5B8484%5D=3&hc_timeout%5B8484%5D=5&hc_path%5B8484%5D=%2F&hc_method%5B8484%5D=get
+      - name: install koyeb cli
+        run: |
+          curl -sL https://cli.koyeb.com/install | bash
+          echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
+
+      - name: authenticate into koyeb cli
+        env:
+          KOYEB_API_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+        run: koyeb auth login --token "$KOYEB_API_TOKEN"
+      
+      - name: deploy / update service
+        run: |
+          # Если сервис уже создан — обновляем образ
+          koyeb services update financial-app --image financial-app:latest || \
+          # Если сервиса нет — создаём новый
+          koyeb services create financial-app --image financial-app:latest --ports 8484:http --env SPRING_PROFILE=ci BUILD_PROFILE=ci
       
       - name: run liquibase migrations
         run: |
