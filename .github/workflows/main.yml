@@ -29,4 +29,4 @@ jobs:
       - name: run liquibase migrations dry-run
         run: |
           cd migration
-          mvn -Plocal liquibase:update '-Dliquibase.url=jdbc:postgresql://postgres:5432/financial'
+          mvn -Plocal liquibase:update
