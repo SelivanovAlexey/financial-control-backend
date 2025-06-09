@@ -6,5 +6,7 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21
 WORKDIR /app
 COPY --from=build /app/core/target/*.jar financial-app.jar
+# для деплоя на fly.io
+ENV PORT=8484
 EXPOSE 8484
 ENTRYPOINT ["java", "-jar", "financial-app.jar"]
