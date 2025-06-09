@@ -39,7 +39,8 @@ jobs:
         run: |
           curl -sL https://cli.koyeb.com/install | bash
           echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
-          echo 'export PATH="$HOME/.koyeb/bin:$PATH"' >> $GITHUB_ENV
+          export PATH="$HOME/.koyeb/bin:$PATH"
+          koyeb version
 
       - name: authenticate into koyeb cli
         env:
