@@ -30,3 +30,15 @@ jobs:
         run: |
           cd migration
           mvn -Plocal liquibase:update
+  ci-deploy:
+    name: deploying onto koyeb paas
+    runs-on: ubuntu-latest
+    needs: build
+    steps: 
+      - name: trigger koyeb deploy
+        run: curl -X POST https://app.koyeb.com/deploy?name=financial-control-backend-ci&instance_type=free&regions=was&instances_min=0&autoscaling_sleep_idle_delay=300&env%5BBUILD_PROFILE%5D=ci&env%5BSPRING_PROFILE%5D=ci&ports=8484%3Bhttp%3B%2F&hc_protocol%5B8484%5D=tcp&hc_grace_period%5B8484%5D=5&hc_interval%5B8484%5D=30&hc_restart_limit%5B8484%5D=3&hc_timeout%5B8484%5D=5&hc_path%5B8484%5D=%2F&hc_method%5B8484%5D=get
+      
+      - name: run liquibase migrations
+        run: |
+          cd migration
+          mvn -Pci liquibase:update
