@@ -7,4 +7,4 @@ FROM eclipse-temurin:21
 WORKDIR /app
 COPY --from=build /app/core/target/*.jar financial-app.jar
 EXPOSE 8484
-ENTRYPOINT ["java", "-jar", "financial-app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=production", "-jar", "financial-app.jar"]
