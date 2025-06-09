@@ -44,7 +44,8 @@ jobs:
       - name: start up database
         run: | 
           cd migration
-          docker compose -f docker-compose.yaml up
+          ls
+          # docker compose -f docker-compose.yaml up
 
       - name: run liquibase migrations
         run: |
