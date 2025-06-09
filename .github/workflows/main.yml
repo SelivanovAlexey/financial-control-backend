@@ -42,7 +42,7 @@ jobs:
         run: mvn clean package
 
       - name: start up database
-        run: cd migration | docker-compose up
+        run: cd migration | docker compose up
 
       - name: run liquibase migrations
         run: cd migration | mvn -Plocal liquibase:update
