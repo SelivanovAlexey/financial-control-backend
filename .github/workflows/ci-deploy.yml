@@ -48,8 +48,8 @@ jobs:
           service-env: SPRING_PROFILE=ci,BUILD_PROFILE=ci
           service-ports: "8484:http"
           service-routes: "/:8484"
-          service-checks: "8484:tcp"
           git-builder: docker
+          service-instance-type: eco
       
       - name: run liquibase migrations
         run: |
