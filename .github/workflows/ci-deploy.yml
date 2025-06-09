@@ -50,6 +50,9 @@ jobs:
           service-routes: "/:8484"
           git-builder: docker
           service-instance-type: free
+
+      - name: checkout repo
+        uses: actions/checkout@v4 #
       
       - name: run liquibase migrations
         run: |
