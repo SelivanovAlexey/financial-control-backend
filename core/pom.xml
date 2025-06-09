@@ -13,10 +13,6 @@
 
     <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    
-<build>
-        <finalName>financial-control-app</finalName>
-    </build>
 
     <dependencies>
         <dependency>
@@ -59,5 +55,15 @@
             <artifactId>postgresql</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>financial-control-app</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

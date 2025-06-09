@@ -66,6 +66,25 @@
                 <profile.logging>debug</profile.logging>
             </properties>
         </profile>
+
+        <profile>
+            <id>docker-prod</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>docker</value>
+                </property>
+            </activation>
+
+            <properties>
+                <profile.changelogSchemaName>public</profile.changelogSchemaName>
+                <profile.propertyFile>src/main/resources/db/local/liquibase.properties</profile.propertyFile>
+                <profile.changeLogFile>src/main/resources/db/master.xml</profile.changeLogFile>
+                <profile.dataDir>src/main/resources/db/local/data</profile.dataDir>
+                <profile.verbose>true</profile.verbose>
+                <profile.logging>debug</profile.logging>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

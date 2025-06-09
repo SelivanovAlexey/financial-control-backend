@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
                 .body(ValidationException.builder().msg("Validation failed").errors(errors).build());
     }
 
+    //TODO: если нет юзера в таблицк, срабатывает этот хендлер
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<CommonException> badCredentialsExceptionHandler(BadCredentialsException e) {
         log.error("BadCredentialsException: {}.", e.getMessage(), e);
