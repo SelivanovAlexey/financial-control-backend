@@ -10,21 +10,6 @@ jobs:
   build:
     name: building application
     runs-on: ubuntu-latest
-
-    # services:
-    #   postgres:
-    #     image: postgres:15
-    #     env:
-    #       POSTGRES_DB: financial
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: 1234
-    #     ports:
-    #       - 5432:5432
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
     steps: 
       - name: checkout repo
         uses: actions/checkout@v4 #
@@ -46,7 +31,25 @@ jobs:
           cd migration
           docker compose -f docker-compose.yaml up -d
 
-      - name: run liquibase migrations
+      - name: run liquibase migrations dry-run
         run: |
           cd migration
           mvn -Plocal liquibase:update
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: financial-controll-app
+          path: /core/target
+  
+  ci-deploy:
+    name: deploy on render ci environment
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: financial-controll-app
+      - name: deploy to render.com
