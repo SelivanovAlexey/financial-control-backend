@@ -49,6 +49,7 @@ jobs:
           service-ports: "8484:http"
           service-routes: "/:8484"
           service-checks: "8484:tcp"
+          git-builder: docker
       
       - name: run liquibase migrations
         run: |
