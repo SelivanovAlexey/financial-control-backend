@@ -1,1 +1,28 @@
+name: Production pipeline
+on:
+  workflow_dispatch:
 
+jobs:
+  build:
+    name: building application
+    runs-on: ubuntu-latest
+    steps: 
+      - name: checkout repo
+        uses: actions/checkout@v4 #
+
+      - name: setup java and maven
+        uses: actions/setup-java@v3 
+        with:
+           java-version: '21'
+           distribution: 'temurin'
+
+      - name: setup docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: test app and database containers launch
+        run: docker compose -f docker-compose.yaml up -d
+
+      - name: run liquibase migrations dry-run
+        run: |
+          cd migration
+          mvn -Plocal liquibase:update
