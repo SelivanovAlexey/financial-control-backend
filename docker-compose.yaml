@@ -9,6 +9,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BUILD_PROFILE: local
+        SPRING_PROFILE: local
     ports:
       - 8484:8484
     environment:
