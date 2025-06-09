@@ -22,13 +22,9 @@ jobs:
 
       - name: setup docker
         uses: docker/setup-buildx-action@v3
-          
-      - name: build with maven
-        run: mvn clean package 
 
-      - name: start up database
-        run: | 
-          cd migration
+      - name: start up app and database
+        run: 
           docker compose -f docker-compose.yaml up -d
 
       - name: run liquibase migrations dry-run
@@ -36,20 +32,20 @@ jobs:
           cd migration
           mvn -Plocal liquibase:update
 
-      - name: upload artifact
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: financial-controll-app
-          path: /core/target
+      # - name: upload artifact
+      #   uses: actions/upload-artifact@v4.6.2
+      #   with:
+      #     name: financial-controll-app
+      #     path: /core/target
   
-  ci-deploy:
-    name: deploy on render ci environment
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - name: download artifact
-        uses: actions/download-artifact@v4.3.0
-        with:
-          name: financial-controll-app
-      - name: deploy to render.com
+  # ci-deploy:
+  #   name: deploy on render ci environment
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: github.event_name != 'workflow_dispatch'
+  #   steps:
+  #     - name: download artifact
+  #       uses: actions/download-artifact@v4.3.0
+  #       with:
+  #         name: financial-controll-app
+  #     - name: deploy to render.com
