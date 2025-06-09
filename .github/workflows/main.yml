@@ -39,13 +39,17 @@ jobs:
         uses: docker/setup-buildx-action@v3
           
       - name: build with maven
-        run: mvn clean package
+        run: mvn clean package 
 
       - name: start up database
-        run: cd migration | docker compose -f docker-compose.yaml up
+        run: | 
+          cd migration
+          docker compose -f docker-compose.yaml up
 
       - name: run liquibase migrations
-        run: cd migration | mvn -Plocal liquibase:update
+        run: |
+          cd migration
+          mvn -Plocal liquibase:update
 
       # - name: liquibase migration update dry-run
       #   uses: liquibase-github-actions/update@v4.32.0
