@@ -52,10 +52,13 @@ jobs:
           SERVICE_NAME: financial-control-backend-prod
           NORTHFLANK_API_TOKEN: ${{ secrets.NORTHFLANK_API_TOKEN }}
         run: |
-          curl --header "Content-Type: application/json" \
+          echo "🔁 Triggering Northflank build for $PROJECT_NAME/$SERVICE_NAME..."
+          curl --fail --silent --show-error \
+            --header "Content-Type: application/json" \
             --header "Authorization: Bearer $NORTHFLANK_API_TOKEN" \
             --request POST \
-            https://api.northflank.com/v1/projects/{PROJECT_NAME}/services/{SERVICE_NAME}/build
+            https://api.northflank.com/v1/projects/$PROJECT_NAMEtyty/services/$SERVICE_NAME/build
+          echo "✅ Build triggered successfully."
 
       - name: checkout repo
         uses: actions/checkout@v4 #
