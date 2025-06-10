@@ -57,7 +57,7 @@ jobs:
             --header "Content-Type: application/json" \
             --header "Authorization: Bearer $NORTHFLANK_API_TOKEN" \
             --request POST \
-            https://api.northflank.com/v1/projects/$PROJECT_NAMEtyty/services/$SERVICE_NAME/build
+            https://api.northflank.com/v1/projects/$PROJECT_NAME/services/$SERVICE_NAME/build
           echo "✅ Build triggered successfully."
 
       - name: checkout repo
