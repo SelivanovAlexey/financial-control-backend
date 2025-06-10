@@ -50,11 +50,12 @@ jobs:
         env:
           PROJECT_NAME: financial-control-app
           SERVICE_NAME: financial-control-backend-prod
+          NORTHFLANK_API_TOKEN: ${{ secrets.NORTHFLANK_API_TOKEN }}
         run: |
-          PROJECT_ID=$(northflank projects list --json | jq -r ".[] | select(.name==\"$PROJECT_NAME\") | .id")
-          SERVICE_ID=$(northflank services list --project-id "$PROJECT_ID" --json | jq -r ".[] | select(.name==\"$SERVICE_NAME\") | .id")
-
-          northflank builds create --project-id "$PROJECT_ID" --service-id "$SERVICE_ID"
+          curl --header "Content-Type: application/json" \
+            --header "Authorization: Bearer $NORTHFLANK_API_TOKEN" \
+            --request POST \
+            https://api.northflank.com/v1/projects/{PROJECT_NAME}/services/{SERVICE_NAME}/build
 
       - name: checkout repo
         uses: actions/checkout@v4 #
