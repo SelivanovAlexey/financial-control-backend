@@ -1,4 +1,5 @@
 name: Production pipeline
+
 on:
   workflow_dispatch:
 
@@ -26,3 +27,39 @@ jobs:
         run: |
           cd migration
           mvn -Plocal liquibase:update
+          
+  prod-deploy:
+    name: deploying onto northflank paas
+    runs-on: ubuntu-latest
+    needs: build
+    steps: 
+      - name: install node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: install northflank/cli
+        run: npm install -g @northflank/cli
+
+      - name: authenticate in cli
+        env:
+          NORTHFLANK_API_TOKEN: ${{ secrets.NORTHFLANK_API_TOKEN }}
+        run: northflank auth login --token $NORTHFLANK_API_TOKEN
+
+      - name: trigger build and deploy
+        env:
+          PROJECT_NAME: financial-control-app
+          SERVICE_NAME: financial-control-backend-prod
+        run: |
+          PROJECT_ID=$(northflank projects list --json | jq -r ".[] | select(.name==\"$PROJECT_NAME\") | .id")
+          SERVICE_ID=$(northflank services list --project-id "$PROJECT_ID" --json | jq -r ".[] | select(.name==\"$SERVICE_NAME\") | .id")
+
+          northflank builds create --project-id "$PROJECT_ID" --service-id "$SERVICE_ID"
+
+      - name: checkout repo
+        uses: actions/checkout@v4 #
+      
+      - name: run liquibase migrations
+        run: |
+          cd migration
+          mvn -Pproduction liquibase:update
