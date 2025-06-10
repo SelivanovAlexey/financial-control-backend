@@ -44,7 +44,7 @@ jobs:
       - name: authenticate in cli
         env:
           NORTHFLANK_API_TOKEN: ${{ secrets.NORTHFLANK_API_TOKEN }}
-        run: northflank auth login --token $NORTHFLANK_API_TOKEN
+        run: northflank login --token $NORTHFLANK_API_TOKEN
 
       - name: trigger build and deploy
         env:
